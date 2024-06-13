@@ -1,28 +1,20 @@
 package main
 
-import "fmt"
-
-type transformFunc func(int) int
+import (
+	"fmt"
+)
 
 func main() {
-	numbers := []int{1, 2, 3, 4}
-	moreNumbers := []int{5, 1, 2}
-	for i := 0; i < 4; i++ {
-		numbers[i] = i + 1
-	}
+	numbers := []int{1, 2, 3}
 
-	transformerFn1 := getTransformerFunction(&numbers)
-	transformerFn2 := getTransformerFunction(&moreNumbers)
+	transformed := transformNumbers(&numbers, createTransformer(2))
 
-	doubled := transformNumbers(&numbers, transformerFn1)
-	tripled := transformNumbers(&moreNumbers, transformerFn2)
-
-	fmt.Println(doubled)
-	fmt.Println(tripled)
+	fmt.Println(transformed)
 }
 
-func transformNumbers(numbers *[]int, transform transformFunc) []int {
+func transformNumbers(numbers *[]int, transform func(int) int) []int {
 	dNumbers := []int{}
+
 	for _, val := range *numbers {
 		dNumbers = append(dNumbers, transform(val))
 	}
@@ -30,17 +22,8 @@ func transformNumbers(numbers *[]int, transform transformFunc) []int {
 	return dNumbers
 }
 
-func getTransformerFunction(numbers *[]int) transformFunc {
-	if (*numbers)[0] == 1 {
-		return double
+func createTransformer(multiplier int) func(int) int {
+	return func(num int) int {
+		return num * multiplier
 	}
-	return triple
-}
-
-func double(number int) int {
-	return number * 2
-}
-
-func triple(number int) int {
-	return number * 3
 }
