@@ -5,15 +5,19 @@ import "fmt"
 type transformFunc func(int) int
 
 func main() {
-	numbers := make([]int, 4)
+	numbers := []int{1, 2, 3, 4}
+	moreNumbers := []int{5, 1, 2}
 	for i := 0; i < 4; i++ {
 		numbers[i] = i + 1
 	}
 
-	doubled := transformNumbers(&numbers, double)
-	fmt.Println(doubled)
+	transformerFn1 := getTransformerFunction(&numbers)
+	transformerFn2 := getTransformerFunction(&moreNumbers)
 
-	tripled := transformNumbers(&numbers, triple)
+	doubled := transformNumbers(&numbers, transformerFn1)
+	tripled := transformNumbers(&moreNumbers, transformerFn2)
+
+	fmt.Println(doubled)
 	fmt.Println(tripled)
 }
 
@@ -24,6 +28,13 @@ func transformNumbers(numbers *[]int, transform transformFunc) []int {
 	}
 
 	return dNumbers
+}
+
+func getTransformerFunction(numbers *[]int) transformFunc {
+	if (*numbers)[0] == 1 {
+		return double
+	}
+	return triple
 }
 
 func double(number int) int {
