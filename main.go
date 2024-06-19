@@ -3,7 +3,8 @@ package main
 import "fmt"
 
 func main() {
-	sum := sumup(1, 2, 3)
+	numbers := []int{1, 2, 3}
+	sum := sumup(numbers...)
 	fmt.Println(sum)
 }
 
